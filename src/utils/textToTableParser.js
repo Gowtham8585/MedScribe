@@ -53,17 +53,15 @@ export const parsePrescriptionText = async (text) => {
 };
 
 const fallbackParse = (text) => {
-  // Simple heuristic parsing for demo purposes when no AI key is present
   const lowerText = text.toLowerCase();
   
   const result = {
-    symptoms: "As described by patient.",
+    symptoms: text || "As described by patient.",
     medicines: [],
     advice: ["Take rest", "Drink plenty of water"],
     followUp: "After 5 days"
   };
 
-  // Very basic mock extraction of "Pantoprazole" or "Paracetamol" just for visual demo
   if (lowerText.includes('pantoprazole')) {
     result.medicines.push({
       name: "Pantoprazole 40 mg",
@@ -84,10 +82,9 @@ const fallbackParse = (text) => {
     });
   }
 
-  // If we couldn't parse anything specific but there is text
   if (result.medicines.length === 0) {
     result.medicines.push({
-      name: "Prescribed Medicine (Parsed from text)",
+      name: "Generic Medicine (No AI API key found)",
       morning: "After Food",
       afternoon: "-",
       evening: "After Food",

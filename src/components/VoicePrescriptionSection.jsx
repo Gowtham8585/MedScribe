@@ -51,8 +51,8 @@ export function VoicePrescriptionSection({ prescriptionText, setPrescriptionText
       )}
       
       {error && (
-        <div style={{ color: 'red', marginBottom: '1rem', fontSize: '0.875rem' }}>
-          Microphone Error: {error}
+        <div style={{ color: 'red', marginBottom: '1rem', fontSize: '0.875rem', padding: '10px', backgroundColor: '#fee2e2', borderRadius: '4px' }}>
+          <strong>Microphone Blocked:</strong> {error === 'not-allowed' ? 'Your browser is blocking microphone access. Please click the lock icon in the address bar (or go to site settings) to allow microphone permissions, then try again.' : error}
         </div>
       )}
       
