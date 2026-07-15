@@ -539,7 +539,6 @@ body {
 
 .signature-line {
   width: 150px;
-  border-top: 1px dashed #000;
   margin-top: 40px;
   padding-top: 5px;
 }
