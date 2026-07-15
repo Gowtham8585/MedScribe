@@ -115,7 +115,7 @@ export function PrescriptionPreview({ doctorData, patientData, prescriptionText 
             </div>
           )}
 
-          <div className="prescription-footer" style={{ justifyContent: 'space-between' }}>
+          <div className="prescription-footer">
             <div className="signature-box">
               <div className="signature-line">Clinic Seal</div>
             </div>
