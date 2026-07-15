@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card } from './Card';
-import { Mic, MicOff, Stethoscope } from 'lucide-react';
+import { Mic, Square, Stethoscope } from 'lucide-react';
 import { useSpeechRecognition } from '../hooks/useSpeechRecognition';
 
 export function VoicePrescriptionSection({ prescriptionText, setPrescriptionText }) {
@@ -15,16 +15,15 @@ export function VoicePrescriptionSection({ prescriptionText, setPrescriptionText
     isSupported
   } = useSpeechRecognition();
 
-  // Sync the hook's transcript with our parent state if it changes
+  // Sync the hook's transcript with our parent state if it changes or stops
   useEffect(() => {
-    if (transcript && isListening) {
-      // Simple way to handle continuous dictation mapping to the text area
-      // For a real app we'd carefully merge interim and final, but here we'll just 
-      // replace the text while recording to match the transcript.
-      // A better approach is to append to existing text.
-      // If we just started, we want to append.
+    // If it stopped listening (like when a mobile browser pauses) and we have a transcript,
+    // we MUST commit it to the main text area so the user doesn't lose what they said.
+    if (!isListening && transcript) {
+      setPrescriptionText(prev => (prev + (prev ? ' ' : '') + transcript).trim());
+      setTranscript('');
     }
-  }, [transcript, isListening]);
+  }, [isListening, transcript, setPrescriptionText, setTranscript]);
 
   // Handle manual typing
   const handleTextChange = (e) => {
@@ -35,9 +34,7 @@ export function VoicePrescriptionSection({ prescriptionText, setPrescriptionText
   const toggleListening = () => {
     if (isListening) {
       stopListening();
-      // On stop, append whatever transcript we got to the main text
-      setPrescriptionText(prev => (prev + (prev && transcript ? ' ' : '') + transcript).trim());
-      setTranscript(''); // Clear hook transcript for next time
+      // Merging is now handled by the useEffect above when isListening becomes false
     } else {
       // Clear transcript before starting fresh
       setTranscript('');
@@ -79,7 +76,7 @@ export function VoicePrescriptionSection({ prescriptionText, setPrescriptionText
           onClick={toggleListening}
           disabled={!isSupported}
         >
-          {isListening ? <MicOff size={32} /> : <Mic size={32} />}
+          {isListening ? <Square size={24} fill="currentColor" /> : <Mic size={32} />}
         </button>
         <span className={`mic-status-text ${isListening ? 'recording' : 'text-muted'}`}>
           {isListening ? 'Listening...' : 'Start Speaking'}

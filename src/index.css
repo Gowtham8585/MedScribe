@@ -702,4 +702,15 @@ body {
   .action-bar .btn {
     max-width: none;
   }
+  
+  .prescription-footer {
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+  }
+  
+  .signature-line {
+    width: 100%;
+    min-width: 150px;
+  }
 }
