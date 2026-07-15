@@ -27,8 +27,11 @@ export function VoicePrescriptionSection({ prescriptionText, setPrescriptionText
 
   // Handle manual typing
   const handleTextChange = (e) => {
+    if (isListening) {
+      stopListening();
+      setTranscript('');
+    }
     setPrescriptionText(e.target.value);
-    setTranscript(e.target.value); // Keep hook in sync if possible
   };
 
   const toggleListening = () => {
